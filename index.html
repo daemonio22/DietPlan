@@ -118,11 +118,24 @@
     }
   </script>
   <style>
-    body {
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
       background-color: #09090b;
       color: #f4f4f5;
       -webkit-tap-highlight-color: transparent;
+      touch-action: pan-y;
+    }
+    button, input, label {
       touch-action: manipulation;
+    }
+    /* Custom sleek range slider */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: transparent;
+      cursor: pointer;
+      touch-action: none;
     }
     button, input, label {
       touch-action: manipulation;
@@ -195,7 +208,7 @@
         <div>
           <div class="flex items-center gap-2">
             <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span class="text-[11px] font-semibold uppercase tracking-wider text-emerald-400">Bernardo's Diet Plan • v1.2</span>
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-emerald-400">Bernardo's Diet Plan • v1.3</span>
           </div>
           <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-white mt-0.5">Equivalent Tracker</h1>
           <p id="currentDateLabel" class="text-xs text-zinc-400 mt-0.5"></p>
@@ -373,7 +386,7 @@
       <div class="flex items-center justify-between">
         <div>
           <h2 class="text-sm font-bold text-white">Food Lookup & Portion Slider</h2>
-          <p class="text-xs text-zinc-400">Search in English or Spanish (e.g. "gouda", "ribeye", "arroz", "panela")</p>
+          <p class="text-xs text-zinc-400">Search in English or Spanish (e.g. "pizza", "gouda", "ribeye", "arroz")</p>
         </div>
       </div>
 
@@ -424,13 +437,17 @@
         <!-- Slider Controls -->
         <div class="space-y-2 pt-1">
           <div class="flex items-baseline justify-between">
-            <span class="text-xs font-semibold text-zinc-400">Slide Portion Size:</span>
+            <span class="text-xs font-semibold text-zinc-400">Slide or Tap Portion Size:</span>
             <div class="text-right">
               <span id="sliderAmountDisplay" class="text-lg font-extrabold text-emerald-400">120g</span>
               <span id="sliderEqDisplay" class="text-xs font-bold text-zinc-300 ml-1">(4 Eq)</span>
             </div>
           </div>
-          <input type="range" id="portionRangeSlider" min="0.5" max="6" step="0.5" value="4" oninput="updateSliderReadout()" class="w-full" />
+          <div class="flex items-center gap-3">
+            <button onclick="nudgeSlider(-1)" class="w-9 h-9 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-200 font-extrabold text-base flex items-center justify-center shrink-0 active:scale-95">−</button>
+            <input type="range" id="portionRangeSlider" min="0.5" max="6" step="0.5" value="4" oninput="updateSliderReadout()" class="w-full" />
+            <button onclick="nudgeSlider(1)" class="w-9 h-9 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-200 font-extrabold text-base flex items-center justify-center shrink-0 active:scale-95">+</button>
+          </div>
           <div class="flex justify-between text-[10px] text-zinc-500 font-medium">
             <span id="sliderMinLabel">0.5 Eq</span>
             <span id="sliderKcal">160 kcal</span>
@@ -654,15 +671,68 @@
       // --- LIBRES / VERDURAS (0 Eq) ---
       { id: 'all_veggies', name: 'Todas las Verduras / All Vegetables (Libres)', cat: 'Libres', tier: 'Unlimited (0 Eq)', unit: 'porción', baseQty: 1, stepEq: 1, maxEq: 1, kcal: 0, p: 0, c: 0, f: 0, isFree: true, tags: 'verduras vegetables ensalada salad lechuga tomate san marzano brocoli espinaca pepino cebolla' },
       { id: 'coffee_tea_water', name: 'Café negro / Té / Agua mineral / Gelatina light', cat: 'Libres', tier: 'Unlimited (0 Eq)', unit: 'porción', baseQty: 1, stepEq: 1, maxEq: 1, kcal: 0, p: 0, c: 0, f: 0, isFree: true, tags: 'cafe coffee te tea agua mineral sparkling water gelatina light' },
-      { id: 'free_condiments', name: 'Mostaza / Vinagre / Salsa soya / Limón / Salsas picantes', cat: 'Libres', tier: 'Unlimited (0 Eq)', unit: 'porción', baseQty: 1, stepEq: 1, maxEq: 1, kcal: 0, p: 0, c: 0, f: 0, isFree: true, tags: 'mostaza mustard vinagre soya soy sauce limon valentina tabasco chipotle especias' }
+      { id: 'free_condiments', name: 'Mostaza / Vinagre / Salsa soya / Limón / Salsas picantes', cat: 'Libres', tier: 'Unlimited (0 Eq)', unit: 'porción', baseQty: 1, stepEq: 1, maxEq: 1, kcal: 0, p: 0, c: 0, f: 0, isFree: true, tags: 'mostaza mustard vinagre soya soy sauce limon valentina tabasco chipotle especias' },
+
+      // --- COMIDAS COMPUESTAS (Multi-Category Meals: Pizza, Burger, Sushi, etc.) ---
+      {
+        id: 'pizza_slice',
+        name: 'Pizza (Margarita / Champiñones / Estándar — 1 reb)',
+        cat: 'Comidas Compuestas',
+        tier: '2 Cer + 1.5 Prot + 1.5 Grasa',
+        unit: 'reb',
+        baseQty: 1,
+        stepEq: 0.5,
+        maxEq: 4,
+        kcal: 315,
+        p: 14,
+        c: 30,
+        f: 15,
+        compound: { Cereales: 2, Proteínas: 1.5, Grasas: 1.5 },
+        warningText: 'Budgeted conservatively (2 Cer + 1.5 Prot + 1.5 Grasa per slice) so lighter Margarita or mushroom slices give you a built-in margin!',
+        tags: 'pizza slice rebanada margherita margarita champinones mushrooms cheese queso napolitana'
+      },
+      {
+        id: 'burger_classic',
+        name: 'Hamburguesa clásica / Classic Burger (150g meat + bun)',
+        cat: 'Comidas Compuestas',
+        tier: '2 Cer + 5 Prot + 2 Grasa',
+        unit: 'pza',
+        baseQty: 1,
+        stepEq: 0.5,
+        maxEq: 2,
+        kcal: 505,
+        p: 39,
+        c: 30,
+        f: 25,
+        compound: { Cereales: 2, Proteínas: 5, Grasas: 2 },
+        warningText: 'Counts as 2 Cereales (bun) + 5 Proteínas (150g patty) + 2 Grasas (oil/cheese/sauce).',
+        tags: 'hamburguesa burger cheeseburger carne'
+      },
+      {
+        id: 'sushi_roll',
+        name: 'Rollo de Sushi estándar / Sushi Roll (8–10 pzas)',
+        cat: 'Comidas Compuestas',
+        tier: '2.5 Cer + 2 Prot + 1 Grasa',
+        unit: 'rollo',
+        baseQty: 1,
+        stepEq: 0.5,
+        maxEq: 3,
+        kcal: 300,
+        p: 19,
+        c: 38,
+        f: 7,
+        compound: { Cereales: 2.5, Proteínas: 2, Grasas: 1 },
+        warningText: '1 standard roll (without tempura/cream cheese) = 2.5 Cereales + 2 Proteínas + 1 Grasa.',
+        tags: 'sushi roll rollo salmon atun california'
+      }
     ];
 
-    const CATEGORIES = ['All', 'Proteínas', 'Cereales', 'Cereales c/ Grasa', 'Grasas', 'Frutas', 'Leguminosas', 'Leche', 'Azúcares', 'Libres'];
+    const CATEGORIES = ['All', 'Proteínas', 'Cereales', 'Cereales c/ Grasa', 'Grasas', 'Frutas', 'Comidas Compuestas', 'Leguminosas', 'Leche', 'Azúcares', 'Libres'];
 
     // =========================================================================
-    // 2. STATE & LOCALSTORAGE PERSISTENCE
+    // 2. APPLICATION STATE & LOCAL STORAGE
     // =========================================================================
-    const STORAGE_KEY = 'mariana_eq_tracker_v1';
+    const STORAGE_KEY = 'bernardo_diet_tracker_v1';
 
     let appState = {
       gymDay: false,
@@ -672,7 +742,7 @@
       searchQuery: '',
       selectedFoodId: null,
       sliderEq: 1,
-      logs: [] // { id, foodId, name, cat, tier, eq, fatEqExtra, qtyLabel, kcal, p, c, f, meal }
+      logs: []
     };
 
     function loadState() {
@@ -680,7 +750,13 @@
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) {
           const parsed = JSON.parse(saved);
-          appState = { ...appState, ...parsed };
+          appState = {
+            ...appState,
+            gymDay: !!parsed.gymDay,
+            wheyScoops: Number(parsed.wheyScoops) || 0,
+            quickMealTarget: parsed.quickMealTarget || 'meal1',
+            logs: Array.isArray(parsed.logs) ? parsed.logs : []
+          };
         }
       } catch (e) {
         console.warn('Could not load saved state:', e);
@@ -701,32 +777,16 @@
     }
 
     // =========================================================================
-    // 3. FORMATTING HELPERS
+    // 3. FORMATTING & TOAST HELPERS
     // =========================================================================
     function formatNum(n) {
-      return Number.isInteger(n) ? n.toString() : n.toFixed(2).replace(/\.00$/, '').replace(/(\.\d)0$/, '$1');
+      return Number(n.toFixed(2)).toString();
     }
 
-    function formatQuantityLabel(food, eqMultiplier) {
-      if (food.isFree) return 'Libre (0 Eq)';
-      if (food.id === 'alcohol_drink') {
-        const drinks = eqMultiplier / 1.5;
-        return `${formatNum(drinks)} ${drinks === 1 ? 'drink' : 'drinks'}`;
-      }
-      const rawQty = food.baseQty * eqMultiplier;
-      if (food.unit === 'g') {
-        return `${Math.round(rawQty)}g`;
-      }
-      if (food.unit === 'ml') {
-        return `${Math.round(rawQty)} ml`;
-      }
-      if (food.unit === 'third') {
-        if (Math.abs(rawQty - 1) < 0.05) return '⅓ avocado (1 reb)';
-        if (Math.abs(rawQty - 1.5) < 0.05) return '½ avocado';
-        if (Math.abs(rawQty - 2) < 0.05) return '⅔ avocado';
-        if (Math.abs(rawQty - 3) < 0.05) return '1 whole avocado';
-        return `${formatNum(rawQty)} thirds`;
-      }
+    function formatQuantityLabel(food, eq) {
+      const effectiveEq = food.id === 'alcohol_drink' ? (eq / 1.5) : eq;
+      const rawQty = food.baseQty * effectiveEq;
+
       if (food.unit === 'cup') {
         const fractionMap = [
           { val: 0.25, label: '¼ cup' },
@@ -775,7 +835,14 @@
       };
 
       appState.logs.forEach(item => {
-        if (item.cat === 'Proteínas') {
+        if (item.compound) {
+          // Compound food deducts across multiple categories simultaneously
+          Object.entries(item.compound).forEach(([catKey, mult]) => {
+            if (totals[catKey] !== undefined) {
+              totals[catKey] += mult * item.eq;
+            }
+          });
+        } else if (item.cat === 'Proteínas') {
           totals.Proteínas += item.eq;
           if (item.tier === 'Alto en Grasa') totals.highFatProtCount += item.eq;
         } else if (item.cat === 'Cereales') {
@@ -951,6 +1018,7 @@
       if (food.cat === 'Leguminosas') return 'bg-orange-500/15 text-orange-200 border-orange-500/30';
       if (food.cat === 'Leche') return 'bg-purple-500/15 text-purple-300 border-purple-500/30';
       if (food.cat === 'Libres') return 'bg-teal-500/15 text-teal-300 border-teal-500/30';
+      if (food.cat === 'Comidas Compuestas') return 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30';
       return 'bg-zinc-800 text-zinc-300 border-zinc-700';
     }
 
@@ -1023,7 +1091,9 @@
       const baseEqCost = food.id === 'alcohol_drink' ? 1.5 : 1;
       document.getElementById('sliderBaseRule').textContent = food.isFree
         ? 'Libre / Unlimited (0 Equivalents)'
-        : `${baseEqCost} Equivalent = ${formatQuantityLabel(food, baseEqCost)} (${food.kcal} kcal)`;
+        : food.compound
+          ? `1 ${food.unit} = ${food.tier} (${food.kcal} kcal)`
+          : `${baseEqCost} Equivalent = ${formatQuantityLabel(food, baseEqCost)} (${food.kcal} kcal)`;
 
       // Warning box
       const warningBox = document.getElementById('sliderWarningBox');
@@ -1071,15 +1141,35 @@
 
       const qtyLabel = formatQuantityLabel(food, eq);
       document.getElementById('sliderAmountDisplay').textContent = qtyLabel;
-      document.getElementById('sliderEqDisplay').textContent = food.isFree
-        ? '(0 Eq)'
-        : `(${formatNum(eq)} ${food.cat === 'Cereales c/ Grasa' ? 'Cer + ' + formatNum(eq) + ' Fat' : 'Eq'})`;
+
+      if (food.isFree) {
+        document.getElementById('sliderEqDisplay').textContent = '(0 Eq)';
+      } else if (food.compound) {
+        const breakdown = Object.entries(food.compound)
+          .map(([k, v]) => `${formatNum(v * eq)} ${k.slice(0, 4)}`)
+          .join(' + ');
+        document.getElementById('sliderEqDisplay').textContent = `(${breakdown})`;
+      } else {
+        document.getElementById('sliderEqDisplay').textContent = `(${formatNum(eq)} ${food.cat === 'Cereales c/ Grasa' ? 'Cer + ' + formatNum(eq) + ' Fat' : 'Eq'})`;
+      }
 
       const mult = food.id === 'alcohol_drink' ? (eq / 1.5) : eq;
       document.getElementById('sliderKcal').textContent = `${Math.round(food.kcal * mult)} kcal`;
       document.getElementById('sliderProt').textContent = `${formatNum(food.p * mult)}g`;
       document.getElementById('sliderCarb').textContent = `${formatNum(food.c * mult)}g`;
       document.getElementById('sliderFat').textContent = `${formatNum(food.f * mult)}g`;
+    }
+
+    function nudgeSlider(direction) {
+      const slider = document.getElementById('portionRangeSlider');
+      if (!slider || slider.disabled) return;
+      const step = parseFloat(slider.step) || 0.5;
+      const min = parseFloat(slider.min) || 0.5;
+      const max = parseFloat(slider.max) || 6;
+      const current = parseFloat(slider.value) || min;
+      const next = Math.min(max, Math.max(min, Number((current + direction * step).toFixed(2))));
+      slider.value = next;
+      updateSliderReadout();
     }
 
     // =========================================================================
@@ -1099,6 +1189,7 @@
         cat: food.cat,
         tier: food.tier,
         eq: eq,
+        compound: food.compound ? { ...food.compound } : null,
         qtyLabel: formatQuantityLabel(food, eq || 1),
         kcal: Math.round(food.kcal * mult),
         p: food.p * mult,
