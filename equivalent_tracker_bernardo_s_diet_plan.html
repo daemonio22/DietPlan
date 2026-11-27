@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Bernardo's Plan" />
+  <meta name="theme-color" content="#09090b" />
+  <title>Equivalent Tracker • Bernardo's Diet Plan</title>
+  <link id="appleTouchIcon" rel="apple-touch-icon" sizes="180x180" />
+  <link id="favIcon" rel="icon" type="image/png" />
+  <script>
+    // Generate crisp 180x180 monochrome emerald Fit Viking + BDP icon for iOS apple-touch-icon & favicon
+    (function generateAppIcon() {
+      try {
+        const size = 180;
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        // 1. Deep obsidian/slate background
+        const bgGrad = ctx.createRadialGradient(size * 0.5, size * 0.3, 12, size * 0.5, size * 0.5, size * 0.78);
+        bgGrad.addColorStop(0, '#18181b');
+        bgGrad.addColorStop(1, '#09090b');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, size, size);
+
+        // Single monochrome emerald accent color
+        const mono = '#10b981';
+        ctx.strokeStyle = mono;
+        ctx.fillStyle = mono;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        const cx = size / 2;
+
+        // 2. Minimalist geometric Fit Viking helm & beard emblem (monochrome)
+        // Left & Right sweeping horns
+        ctx.lineWidth = 6.5;
+        ctx.beginPath();
+        ctx.moveTo(cx - 28, 56);
+        ctx.bezierCurveTo(cx - 56, 52, cx - 64, 30, cx - 50, 18);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(cx + 28, 56);
+        ctx.bezierCurveTo(cx + 56, 52, cx + 64, 30, cx + 50, 18);
+        ctx.stroke();
+
+        // Helm dome
+        ctx.lineWidth = 5.5;
+        ctx.beginPath();
+        ctx.arc(cx, 62, 30, Math.PI, 0, false);
+        ctx.stroke();
+
+        // Brow guard & nasal bar (T-visor)
+        ctx.beginPath();
+        ctx.moveTo(cx - 33, 62);
+        ctx.lineTo(cx + 33, 62);
+        ctx.moveTo(cx, 44);
+        ctx.lineTo(cx, 84);
+        ctx.stroke();
+
+        // Sculpted jawline & Viking beard (fit sharp V-shape)
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(cx - 26, 68);
+        ctx.lineTo(cx - 24, 92);
+        ctx.lineTo(cx, 122);
+        ctx.lineTo(cx + 24, 92);
+        ctx.lineTo(cx + 26, 68);
+        ctx.stroke();
+
+        // Inner beard chevron accent
+        ctx.lineWidth = 3.5;
+        ctx.beginPath();
+        ctx.moveTo(cx - 12, 92);
+        ctx.lineTo(cx, 108);
+        ctx.lineTo(cx + 12, 92);
+        ctx.stroke();
+
+        // 3. Bold monochrome "BDP" monogram anchored cleanly at the bottom
+        ctx.fillStyle = mono;
+        ctx.font = '800 22px Inter, -apple-system, BlinkMacSystemFont, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('BDP', cx, 150);
+
+        const pngDataUrl = canvas.toDataURL('image/png');
+        window.__APP_ICON_DATA_URL__ = pngDataUrl;
+
+        const appleLink = document.getElementById('appleTouchIcon');
+        const favLink = document.getElementById('favIcon');
+        if (appleLink) appleLink.href = pngDataUrl;
+        if (favLink) favLink.href = pngDataUrl;
+      } catch (e) {
+        console.warn('App icon generation skipped:', e);
+      }
+    })();
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #09090b;
+      color: #f4f4f5;
+      -webkit-tap-highlight-color: transparent;
+    }
+    /* Custom sleek range slider */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: transparent;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-runnable-track {
+      height: 8px;
+      border-radius: 999px;
+      background: #27272a;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      margin-top: -6px;
+      background-color: #10b981;
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      border: 2px solid #09090b;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.45);
+      transition: transform 0.15s ease;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.12);
+    }
+    /* Hide scrollbars on horizontal filter pills */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-20 selection:bg-emerald-500/30 selection:text-emerald-200">
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-300 translate-y-2">
+    <div id="toastContent" class="bg-zinc-900/95 border border-emerald-500/40 text-zinc-100 px-4 py-2.5 rounded-2xl shadow-2xl text-sm font-medium flex items-center gap-2 backdrop-blur-md">
+      <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+      <span id="toastText">Added to Meal 1</span>
+    </div>
+  </div>
+
+  <!-- Reset Confirmation Modal (No browser confirm()) -->
+  <div id="resetModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/75 backdrop-blur-sm p-4">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-sm w-full p-5 shadow-2xl">
+      <h3 class="text-lg font-bold text-zinc-100">Reset Today's Log?</h3>
+      <p class="text-sm text-zinc-400 mt-1.5">This will clear all logged foods and reset your daily equivalents back to zero.</p>
+      <div class="flex gap-3 mt-5">
+        <button onclick="closeResetModal()" class="flex-1 py-2.5 px-4 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-sm font-semibold transition">Cancel</button>
+        <button onclick="confirmResetDay()" class="flex-1 py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-sm font-semibold transition">Reset Day</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App Container -->
+  <div class="max-w-2xl mx-auto px-4 pt-5 space-y-6">
+
+    <!-- 1. Header & Gym Day Toggle -->
+    <header class="bg-zinc-900/90 border border-zinc-800/80 rounded-2xl p-4 shadow-lg">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-emerald-400">Bernardo's Diet Plan</span>
+          </div>
+          <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-white mt-0.5">Equivalent Tracker</h1>
+          <p id="currentDateLabel" class="text-xs text-zinc-400 mt-0.5"></p>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <button onclick="openResetModal()" class="px-3 py-2 rounded-xl bg-zinc-800/90 hover:bg-zinc-700 border border-zinc-700/70 text-xs font-semibold text-zinc-300 transition active:scale-95">
+            Reset Day
+          </button>
+        </div>
+      </div>
+
+      <!-- Gym Day Whey Shake Bar -->
+      <div class="mt-4 pt-3.5 border-t border-zinc-800/80 flex flex-wrap items-center justify-between gap-3">
+        <label class="flex items-center gap-2.5 cursor-pointer select-none">
+          <div class="relative inline-flex items-center">
+            <input type="checkbox" id="gymDayToggle" onchange="toggleGymDay()" class="sr-only peer" />
+            <div class="w-10 h-5 bg-zinc-800 rounded-full peer peer-checked:bg-emerald-600 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-5"></div>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-zinc-100 block">Training Day (Mon/Wed/Thu/Sat)</span>
+            <span class="text-[11px] text-zinc-400">Whey Isolate tracked separate from 8 meal proteins</span>
+          </div>
+        </label>
+
+        <div id="wheyCounterBox" class="flex items-center gap-2 bg-zinc-950/90 border border-zinc-800 rounded-xl px-2.5 py-1.5 transition-opacity">
+          <span class="text-[11px] font-semibold text-zinc-300">Whey Shake:</span>
+          <button onclick="adjustWhey(-0.5)" class="w-6 h-6 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold text-xs flex items-center justify-center">−</button>
+          <span id="wheyCountDisplay" class="text-xs font-extrabold text-emerald-400 min-w-[2.5rem] text-center">0</span>
+          <button onclick="adjustWhey(0.5)" class="w-6 h-6 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold text-xs flex items-center justify-center">+</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- 2. Daily Portion Wallet (Tappable Category Cards) -->
+    <section class="space-y-2.5">
+      <div class="flex items-center justify-between px-1">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-400">Daily Budget (Tap category to browse foods)</h2>
+        <span id="macroSummaryChip" class="text-[11px] font-medium text-zinc-500">0 kcal logged</span>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+        <!-- Proteínas (8 Eq) -->
+        <button onclick="filterByCategory('Proteínas')" class="text-left bg-zinc-900 hover:bg-zinc-800/90 border border-zinc-800 hover:border-emerald-500/50 rounded-2xl p-3.5 transition group">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-emerald-400">Proteínas</span>
+            <span id="protRemainingText" class="text-[11px] font-semibold text-zinc-400">8 left</span>
+          </div>
+          <div class="mt-1.5 flex items-baseline gap-1">
+            <span id="protUsed" class="text-2xl font-extrabold text-white">0</span>
+            <span class="text-xs text-zinc-500 font-medium">/ 8 Eq</span>
+          </div>
+          <div class="w-full h-1.5 bg-zinc-800 rounded-full mt-2 overflow-hidden">
+            <div id="protBar" class="h-full bg-emerald-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+          <p id="protGramsHint" class="text-[11px] text-zinc-400 mt-1.5 truncate">240g cooked meat left</p>
+        </button>
+
+        <!-- Cereales (3-4 Eq) -->
+        <button onclick="filterByCategory('Cereales')" class="text-left bg-zinc-900 hover:bg-zinc-800/90 border border-zinc-800 hover:border-amber-500/50 rounded-2xl p-3.5 transition group">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-amber-400">Cereales</span>
+            <span id="cerRemainingText" class="text-[11px] font-semibold text-zinc-400">3–4 left</span>
+          </div>
+          <div class="mt-1.5 flex items-baseline gap-1">
+            <span id="cerUsed" class="text-2xl font-extrabold text-white">0</span>
+            <span class="text-xs text-zinc-500 font-medium">/ 3–4 Eq</span>
+          </div>
+          <div class="w-full h-1.5 bg-zinc-800 rounded-full mt-2 overflow-hidden">
+            <div id="cerBar" class="h-full bg-amber-400 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+          <p id="cerCupsHint" class="text-[11px] text-zinc-400 mt-1.5 truncate">Up to 2 cups rice/pasta</p>
+        </button>
+
+        <!-- Grasas (3 Eq) -->
+        <button onclick="filterByCategory('Grasas')" class="text-left bg-zinc-900 hover:bg-zinc-800/90 border border-zinc-800 hover:border-sky-500/50 rounded-2xl p-3.5 transition group">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-sky-400">Grasas</span>
+            <span id="fatRemainingText" class="text-[11px] font-semibold text-zinc-400">3 left</span>
+          </div>
+          <div class="mt-1.5 flex items-baseline gap-1">
+            <span id="fatUsed" class="text-2xl font-extrabold text-white">0</span>
+            <span class="text-xs text-zinc-500 font-medium">/ 3 Eq</span>
+          </div>
+          <div class="w-full h-1.5 bg-zinc-800 rounded-full mt-2 overflow-hidden">
+            <div id="fatBar" class="h-full bg-sky-400 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+          <p id="fatExtraWarning" class="text-[11px] text-zinc-400 mt-1.5 truncate">15g healthy fats left</p>
+        </button>
+
+        <!-- Frutas (1 Eq) -->
+        <button onclick="filterByCategory('Frutas')" class="text-left bg-zinc-900 hover:bg-zinc-800/90 border border-zinc-800 hover:border-rose-500/50 rounded-2xl p-3.5 transition group">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-rose-400">Frutas</span>
+            <span id="fruitRemainingText" class="text-[11px] font-semibold text-zinc-400">1 left</span>
+          </div>
+          <div class="mt-1.5 flex items-baseline gap-1">
+            <span id="fruitUsed" class="text-2xl font-extrabold text-white">0</span>
+            <span class="text-xs text-zinc-500 font-medium">/ 1 Eq</span>
+          </div>
+          <div class="w-full h-1.5 bg-zinc-800 rounded-full mt-2 overflow-hidden">
+            <div id="fruitBar" class="h-full bg-rose-400 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+          <p class="text-[11px] text-zinc-400 mt-1.5 truncate">Evening hunger apple</p>
+        </button>
+
+        <!-- Leguminosas & Leche (0-1 Eq each) -->
+        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-3.5 flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <button onclick="filterByCategory('Leguminosas')" class="text-left hover:text-orange-300 transition">
+              <span class="text-[11px] font-bold text-orange-400 block">Leguminosas</span>
+              <span class="text-sm font-extrabold text-white"><span id="legUsed">0</span> <span class="text-[11px] font-normal text-zinc-500">/ 0–1</span></span>
+            </button>
+            <div class="h-7 w-px bg-zinc-800"></div>
+            <button onclick="filterByCategory('Leche')" class="text-right hover:text-purple-300 transition">
+              <span class="text-[11px] font-bold text-purple-400 block">Leche</span>
+              <span class="text-sm font-extrabold text-white"><span id="milkUsed">0</span> <span class="text-[11px] font-normal text-zinc-500">/ 0–1</span></span>
+            </button>
+          </div>
+          <p class="text-[11px] text-zinc-500 mt-2">Optional daily buffers</p>
+        </div>
+
+        <!-- Verduras & Libres -->
+        <button onclick="filterByCategory('Libres')" class="text-left bg-zinc-900 hover:bg-zinc-800/90 border border-zinc-800 hover:border-teal-500/50 rounded-2xl p-3.5 transition flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-bold text-teal-400 block">Verduras & Libres</span>
+            <span class="text-lg font-extrabold text-white mt-0.5 block">Unlimited</span>
+          </div>
+          <p class="text-[11px] text-zinc-400 mt-2 truncate">Veggies, coffee, salsa, soy</p>
+        </button>
+      </div>
+    </section>
+
+    <!-- 3. 1-Tap Daily Staples -->
+    <section class="bg-zinc-900/70 border border-zinc-800/80 rounded-2xl p-4 space-y-3">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-400">1-Tap Staples</h2>
+        <div class="flex items-center gap-1 bg-zinc-950 p-1 rounded-xl border border-zinc-800 text-[11px] font-semibold">
+          <span class="text-zinc-500 px-1.5">Log to:</span>
+          <button id="qTarget-meal1" onclick="setQuickMealTarget('meal1')" class="px-2.5 py-1 rounded-lg bg-emerald-600 text-white transition">12 PM</button>
+          <button id="qTarget-meal2" onclick="setQuickMealTarget('meal2')" class="px-2.5 py-1 rounded-lg text-zinc-400 hover:text-zinc-200 transition">6 PM</button>
+          <button id="qTarget-snack" onclick="setQuickMealTarget('snack')" class="px-2.5 py-1 rounded-lg text-zinc-400 hover:text-zinc-200 transition">Snack</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+        <button onclick="quickAddStaple('chicken_breast', 4)" class="p-2.5 rounded-xl bg-zinc-950 hover:bg-zinc-800 border border-zinc-800/90 text-left transition active:scale-95">
+          <div class="text-xs font-bold text-zinc-100">120g Chicken Breast</div>
+          <div class="text-[11px] text-emerald-400 font-medium">+4 Prot (Muy Bajo)</div>
+        </button>
+        <button onclick="quickAddStaple('ny_strip', 4)" class="p-2.5 rounded-xl bg-zinc-950 hover:bg-zinc-800 border border-zinc-800/90 text-left transition active:scale-95">
+          <div class="text-xs font-bold text-zinc-100">120g NY Strip Steak</div>
+          <div class="text-[11px] text-emerald-400 font-medium">+4 Prot (Bajo Grasa)</div>
+        </button>
+        <button onclick="quickAddStaple('rice_cooked', 1)" class="p-2.5 rounded-xl bg-zinc-950 hover:bg-zinc-800 border border-zinc-800/90 text-left transition active:scale-95">
+          <div class="text-xs font-bold text-zinc-100">½ Cup Cooked Rice</div>
+          <div class="text-[11px] text-amber-400 font-medium">+1 Cereal</div>
+        </button>
+        <button onclick="quickAddStaple('rice_cooked', 1.33)" class="p-2.5 rounded-xl bg-zinc-950 hover:bg-zinc-800 border border-zinc-800/90 text-left transition active:scale-95">
+          <div class="text-xs font-bold text-zinc-100">⅔ Cup Cooked Rice</div>
+          <div class="text-[11px] text-amber-400 font-medium">+1.33 Cereals</div>
+        </button>
+        <button onclick="quickAddStaple('avocado', 1)" class="p-2.5 rounded-xl bg-zinc-950 hover:bg-zinc-800 border border-zinc-800/90 text-left transition active:scale-95">
+          <div class="text-xs font-bold text-zinc-100">⅓ Avocado (1 reb)</div>
+          <div class="text-[11px] text-sky-400 font-medium">+1 Grasa</div>
+        </button>
+        <button onclick="quickAddStaple('apple', 1)" class="p-2.5 rounded-xl bg-zinc-950 hover:bg-zinc-800 border border-zinc-800/90 text-left transition active:scale-95">
+          <div class="text-xs font-bold text-zinc-100">1 Whole Apple</div>
+          <div class="text-[11px] text-rose-400 font-medium">+1 Fruta</div>
+        </button>
+      </div>
+    </section>
+
+    <!-- 4. Smart Food Search, Category Browser & Interactive Portion Slider -->
+    <section id="lookupSection" class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 space-y-4 shadow-lg">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-sm font-bold text-white">Food Lookup & Portion Slider</h2>
+          <p class="text-xs text-zinc-400">Search in English or Spanish (e.g. "gouda", "ribeye", "arroz", "panela")</p>
+        </div>
+      </div>
+
+      <!-- Search Input -->
+      <div class="relative">
+        <svg class="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        <input
+          type="text"
+          id="foodSearchInput"
+          oninput="handleSearchInput()"
+          placeholder="Type any food to check category & slide portion..."
+          class="w-full bg-zinc-950 border border-zinc-800 focus:border-emerald-500 rounded-xl pl-10 pr-9 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none transition"
+        />
+        <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-xs text-zinc-500 hover:text-zinc-300 font-bold px-1.5 py-0.5 rounded bg-zinc-800">
+          ✕
+        </button>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div id="categoryPills" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+        <!-- Populated dynamically by JS -->
+      </div>
+
+      <!-- Interactive Portion Slider Card (Appears when a food is selected) -->
+      <div id="portionSliderPanel" class="hidden bg-zinc-950 border border-emerald-500/40 rounded-2xl p-4 space-y-3.5 shadow-inner">
+        <div class="flex items-start justify-between gap-2">
+          <div>
+            <div class="flex flex-wrap items-center gap-1.5">
+              <span id="sliderCatBadge" class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-300">Proteína</span>
+              <span id="sliderTierBadge" class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-300">Muy Bajo en Grasa</span>
+            </div>
+            <h3 id="sliderFoodName" class="text-base font-extrabold text-white mt-1.5">Pechuga de pollo cocida</h3>
+            <p id="sliderBaseRule" class="text-xs text-zinc-400">1 Equivalent = 30g (40 kcal)</p>
+          </div>
+          <button onclick="closeSliderPanel()" class="text-zinc-500 hover:text-zinc-300 p-1 rounded-lg hover:bg-zinc-900">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+
+        <!-- High Fat / Special Warning Banner -->
+        <div id="sliderWarningBox" class="hidden bg-amber-500/10 border border-amber-500/30 rounded-xl p-2.5 text-xs text-amber-200 flex items-start gap-2">
+          <span class="text-amber-400 font-bold">⚠️</span>
+          <span id="sliderWarningText"></span>
+        </div>
+
+        <!-- Slider Controls -->
+        <div class="space-y-2 pt-1">
+          <div class="flex items-baseline justify-between">
+            <span class="text-xs font-semibold text-zinc-400">Slide Portion Size:</span>
+            <div class="text-right">
+              <span id="sliderAmountDisplay" class="text-lg font-extrabold text-emerald-400">120g</span>
+              <span id="sliderEqDisplay" class="text-xs font-bold text-zinc-300 ml-1">(4 Eq)</span>
+            </div>
+          </div>
+          <input type="range" id="portionRangeSlider" min="0.5" max="6" step="0.5" value="4" oninput="updateSliderReadout()" class="w-full" />
+          <div class="flex justify-between text-[10px] text-zinc-500 font-medium">
+            <span id="sliderMinLabel">0.5 Eq</span>
+            <span id="sliderKcal">160 kcal</span>
+            <span id="sliderMaxLabel">6 Eq</span>
+          </div>
+        </div>
+
+        <!-- Macro breakdown pills for selected portion -->
+        <div class="grid grid-cols-3 gap-2 text-center bg-zinc-900/90 rounded-xl p-2 border border-zinc-800/80 text-xs">
+          <div>
+            <span class="text-[10px] text-zinc-500 block">Protein</span>
+            <span id="sliderProt" class="font-bold text-zinc-200">28g</span>
+          </div>
+          <div>
+            <span class="text-[10px] text-zinc-500 block">Carbs</span>
+            <span id="sliderCarb" class="font-bold text-zinc-200">0g</span>
+          </div>
+          <div>
+            <span class="text-[10px] text-zinc-500 block">Fat</span>
+            <span id="sliderFat" class="font-bold text-zinc-200">4g</span>
+          </div>
+        </div>
+
+        <!-- Add to Meal Buttons -->
+        <div class="grid grid-cols-3 gap-2 pt-1">
+          <button onclick="addSelectedFoodToMeal('meal1')" class="py-2.5 px-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition active:scale-95">
+            + Meal 1 (12 PM)
+          </button>
+          <button onclick="addSelectedFoodToMeal('meal2')" class="py-2.5 px-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold transition active:scale-95">
+            + Meal 2 (6 PM)
+          </button>
+          <button onclick="addSelectedFoodToMeal('snack')" class="py-2.5 px-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold transition active:scale-95">
+            + Snack / Fruit
+          </button>
+        </div>
+      </div>
+
+      <!-- Search Results / Category Food List -->
+      <div id="foodResultsContainer" class="max-h-72 overflow-y-auto space-y-1.5 pr-1">
+        <!-- Populated dynamically by JS -->
+      </div>
+    </section>
+
+    <!-- 5. Smart "What's Left for 6:00 PM?" Dinner Suggester -->
+    <section class="bg-gradient-to-br from-zinc-900 via-zinc-900 to-emerald-950/30 border border-zinc-800 rounded-2xl p-4 space-y-3">
+      <div class="flex items-center justify-between gap-2">
+        <div>
+          <h2 class="text-sm font-bold text-white">6:00 PM Dinner Builder</h2>
+          <p class="text-xs text-zinc-400">Auto-calculates exact portions from your remaining budget</p>
+        </div>
+        <button onclick="generateDinnerCombos()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-950/50 transition active:scale-95 shrink-0">
+          Suggest Combos
+        </button>
+      </div>
+
+      <div id="dinnerCombosOutput" class="hidden space-y-2.5 pt-1">
+        <!-- Populated dynamically -->
+      </div>
+    </section>
+
+    <!-- 6. Today's Meal Log -->
+    <section class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-sm font-bold text-white">Today's Logged Meals</h2>
+        <span id="totalItemsCount" class="text-xs text-zinc-500">0 items</span>
+      </div>
+
+      <!-- Meal 1 (12:00 PM) -->
+      <div class="space-y-2">
+        <div class="flex items-center justify-between text-xs font-bold text-emerald-400 border-b border-zinc-800 pb-1">
+          <span>MEAL 1 • 12:00 PM</span>
+          <span id="meal1Summary" class="text-zinc-500 font-normal">0 items</span>
+        </div>
+        <div id="meal1List" class="space-y-1.5">
+          <p class="text-xs text-zinc-600 italic py-1">Nothing logged for 12:00 PM yet.</p>
+        </div>
+      </div>
+
+      <!-- Meal 2 (6:00 PM) -->
+      <div class="space-y-2">
+        <div class="flex items-center justify-between text-xs font-bold text-sky-400 border-b border-zinc-800 pb-1">
+          <span>MEAL 2 • 6:00 PM</span>
+          <span id="meal2Summary" class="text-zinc-500 font-normal">0 items</span>
+        </div>
+        <div id="meal2List" class="space-y-1.5">
+          <p class="text-xs text-zinc-600 italic py-1">Nothing logged for 6:00 PM yet.</p>
+        </div>
+      </div>
+
+      <!-- Evening Snack / Fruit -->
+      <div class="space-y-2">
+        <div class="flex items-center justify-between text-xs font-bold text-rose-400 border-b border-zinc-800 pb-1">
+          <span>EVENING SNACK / FRUIT</span>
+          <span id="snackSummary" class="text-zinc-500 font-normal">0 items</span>
+        </div>
+        <div id="snackList" class="space-y-1.5">
+          <p class="text-xs text-zinc-600 italic py-1">No evening snack logged.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. COMPLETE EQUIVALENCY DATABASE (Mariana Quinzaños PDF + Bilingual Tags)
+    // =========================================================================
+    const FOOD_DB = [
+      // --- PROTEÍNAS: MUY BAJO EN GRASA (1 Eq = 40 kcal, 7g P, 1g F) ---
+      { id: 'chicken_breast', name: 'Pechuga de pollo cocida / Chicken Breast', cat: 'Proteínas', tier: 'Muy Bajo en Grasa', unit: 'g', baseQty: 30, stepEq: 0.5, maxEq: 6, kcal: 40, p: 7, c: 0, f: 1, tags: 'pollo chicken breast pechuga grilled' },
+      { id: 'fish_seafood', name: 'Pescados y mariscos / Fish & Seafood', cat: 'Proteínas', tier: 'Muy Bajo en Grasa', unit: 'g', baseQty: 30, stepEq: 0.5, maxEq: 6, kcal: 40, p: 7, c: 0, f: 1, tags: 'pescado camaron tilapia white fish shrimp mariscos' },
+      { id: 'tuna_water', name: 'Atún en agua / Canned Tuna in Water', cat: 'Proteínas', tier: 'Muy Bajo en Grasa', unit: 'cup', baseQty: 0.25, stepEq: 0.5, maxEq: 4, kcal: 40, p: 7, c: 0, f: 1, tags: 'atun tuna lata water' },
+      { id: 'surimi', name: 'Surimi / Crab Stick', cat: 'Proteínas', tier: 'Muy Bajo en Grasa', unit: 'barra', baseQty: 1, stepEq: 0.5, maxEq: 4, kcal: 40, p: 7, c: 0, f: 1, tags: 'surimi crab stick' },
+      { id: 'turkey_deli', name: 'Pechuga de pavo / Turkey Breast Deli', cat: 'Proteínas', tier: 'Muy Bajo en Grasa', unit: 'reb', baseQty: 2, stepEq: 0.5, maxEq: 5, kcal: 40, p: 7, c: 0, f: 1, tags: 'pavo turkey deli jamon pechuga' },
+      { id: 'egg_whites', name: 'Claras de huevo / Egg Whites', cat: 'Proteínas', tier: 'Muy Bajo en Grasa', unit: 'pzas', baseQty: 2, stepEq: 0.5, maxEq: 6, kcal: 40, p: 7, c: 0, f: 1, tags: 'claras egg whites huevo' },
+
+      // --- PROTEÍNAS: BAJO EN GRASA (1 Eq = 55 kcal, 7g P, 3g F) ---
+      { id: 'ny_strip', name: 'New York Strip / Bistec / Filete / Lean Beef', cat: 'Proteínas', tier: 'Bajo en Grasa', unit: 'g', baseQty: 30, stepEq: 0.5, maxEq: 6, kcal: 55, p: 7, c: 0, f: 3, tags: 'new york strip steak res carne bistec filete cecina falda molida beef' },
+      { id: 'chicken_piece', name: 'Pieza de pollo sin piel / Skinless Chicken', cat: 'Proteínas', tier: 'Bajo en Grasa', unit: 'g', baseQty: 30, stepEq: 0.5, maxEq: 6, kcal: 55, p: 7, c: 0, f: 3, tags: 'pollo muslo pierna skinless chicken' },
+      { id: 'pork_loin', name: 'Cerdo (pulpa, filete, lomo) / Pork Tenderloin', cat: 'Proteínas', tier: 'Bajo en Grasa', unit: 'g', baseQty: 30, stepEq: 0.5, maxEq: 6, kcal: 55, p: 7, c: 0, f: 3, tags: 'cerdo pork lomo filete tenderloin' },
+      { id: 'salmon', name: 'Salmón / Salmon', cat: 'Proteínas', tier: 'Bajo en Grasa', unit: 'g', baseQty: 30, stepEq: 0.5, maxEq: 6, kcal: 55, p: 7, c: 0, f: 3, tags: 'salmon fish pescado' },
+      { id: 'deli_ham', name: 'Jamón de pavo o pierna / Deli Ham', cat: 'Proteínas', tier: 'Bajo en Grasa', unit: 'reb', baseQty: 2, stepEq: 0.5, maxEq: 5, kcal: 55, p: 7, c: 0, f: 3, tags: 'jamon ham pierna pavo sandwich' },
+      { id: 'panela_oaxaca', name: 'Queso Oaxaca o Panela / Panela Cheese', cat: 'Proteínas', tier: 'Bajo en Grasa', unit: 'g', baseQty: 30, stepEq: 0.5, maxEq: 5, kcal: 55, p: 7, c: 0, f: 3, tags: 'queso panela oaxaca cheese fresh' },
+      { id: 'cottage_cheese', name: 'Queso Cottage / Cottage Cheese', cat: 'Proteínas', tier: 'Bajo en Grasa', unit: 'tbsp', baseQty: 3, stepEq: 0.5, maxEq: 4, kcal: 55, p: 7, c: 0, f: 3, tags: 'cottage cheese queso' },
+
+      // --- PROTEÍNAS: MODERADO EN GRASA (1 Eq = 75 kcal, 7g P, 5g F) ---
+      { id: 'whole_egg', name: 'Huevo entero / Whole Egg', cat: 'Proteínas', tier: 'Moderado en Grasa', unit: 'pza', baseQty: 1, stepEq: 0.5, maxEq: 5, kcal: 75, p: 7, c: 0, f: 5, tags: 'huevo whole egg desayuno' },
+      { id: 'tofu', name: 'Tofu', cat: 'Proteínas', tier: 'Moderado en Grasa', unit: 'cup', baseQty: 0.5, stepEq: 0.5, maxEq: 4, kcal: 75, p: 7, c: 0, f: 5, tags: 'tofu soy' },
+      { id: 'mozzarella', name: 'Queso Mozzarella / Mozzarella Cheese', cat: 'Proteínas', tier: 'Moderado en Grasa', unit: 'g', baseQty: 30, stepEq: 0.5, maxEq: 4, kcal: 75, p: 7, c: 0, f: 5, tags: 'queso mozzarella cheese pizza pasta' },
+      { id: 'goat_cheese', name: 'Queso de cabra / Goat Cheese', cat: 'Proteínas', tier: 'Moderado en Grasa', unit: 'g', baseQty: 30, stepEq: 0.5, maxEq: 4, kcal: 75, p: 7, c: 0, f: 5, tags: 'queso cabra goat cheese' },
+
+      // --- PROTEÍNAS: ALTO EN GRASA (1 Eq = 100 kcal, 7g P, 8g F - High Fat Warning) ---
+      { id: 'gouda_aged_cheese', name: 'Queso Gouda / Quesos Maduros / Aged Cheese', cat: 'Proteínas', tier: 'Alto en Grasa', unit: 'g', baseQty: 30, stepEq: 0.5, maxEq: 4, kcal: 100, p: 7, c: 0, f: 8, highFat: true, warningText: 'Gouda & aged cheeses belong to Proteína: Alto en Grasa (8g fat per 30g). Consider counting 1 extra Grasa if eating multiple portions.', tags: 'gouda cheese queso maduro cheddar manchego parmesano parmesan brie swiss' },
+      { id: 'ribeye', name: 'Ribeye Steak', cat: 'Proteínas', tier: 'Alto en Grasa', unit: 'g', baseQty: 30, stepEq: 0.5, maxEq: 6, kcal: 100, p: 7, c: 0, f: 8, highFat: true, warningText: 'Ribeye is Alto en Grasa (8g fat per 30g vs 3g in NY Strip). Watch your 3 daily Grasas!', tags: 'ribeye rib eye steak carne corte' },
+      { id: 'salami_serrano', name: 'Salami / Jamón Serrano / Prosciutto', cat: 'Proteínas', tier: 'Alto en Grasa', unit: 'g', baseQty: 30, stepEq: 0.5, maxEq: 4, kcal: 100, p: 7, c: 0, f: 8, highFat: true, warningText: 'Alto en Grasa (8g fat per 30g).', tags: 'salami jamon serrano prosciutto charcuterie' },
+      { id: 'bacon_chorizo', name: 'Tocino / Chorizo / Bacon', cat: 'Proteínas', tier: 'Alto en Grasa', unit: 'g', baseQty: 30, stepEq: 0.5, maxEq: 4, kcal: 100, p: 7, c: 0, f: 8, highFat: true, warningText: 'Alto en Grasa (8g fat per 30g).', tags: 'tocino bacon chorizo' },
+      { id: 'wings_nuggets', name: 'Alitas de pollo / Nuggets / Chicken Wings', cat: 'Proteínas', tier: 'Alto en Grasa', unit: 'g', baseQty: 30, stepEq: 0.5, maxEq: 5, kcal: 100, p: 7, c: 0, f: 8, highFat: true, warningText: 'Alto en Grasa (8g fat per 30g).', tags: 'alitas wings nuggets pollo' },
+      { id: 'ribs_carnitas', name: 'Costillas / Carnitas / Barbacoa', cat: 'Proteínas', tier: 'Alto en Grasa', unit: 'g', baseQty: 30, stepEq: 0.5, maxEq: 5, kcal: 100, p: 7, c: 0, f: 8, highFat: true, warningText: 'Alto en Grasa (8g fat per 30g).', tags: 'costillas ribs carnitas barbacoa' },
+
+      // --- CEREALES (1 Eq = 70 kcal, 15g C, 2g P) ---
+      { id: 'rice_cooked', name: 'Arroz cocido / Cooked Rice (Parboiled/White)', cat: 'Cereales', tier: 'Granos y Pastas', unit: 'cup', baseQty: 0.5, stepEq: 0.33, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'arroz rice parboiled white brown cocido' },
+      { id: 'pasta_cooked', name: 'Pasta cocida / Cooked Pasta', cat: 'Cereales', tier: 'Granos y Pastas', unit: 'cup', baseQty: 0.5, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'pasta spaghetti penne fusilli cocida' },
+      { id: 'quinoa_cooked', name: 'Quinoa cocida / Cooked Quinoa', cat: 'Cereales', tier: 'Granos y Pastas', unit: 'cup', baseQty: 0.5, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'quinoa' },
+      { id: 'potato_sweet', name: 'Papa o camote / Potato or Sweet Potato', cat: 'Cereales', tier: 'Granos y Pastas', unit: 'cup', baseQty: 0.5, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'papa camote potato sweet potato' },
+      { id: 'ravioles', name: 'Ravioles / Ravioli', cat: 'Cereales', tier: 'Granos y Pastas', unit: 'pzas', baseQty: 6, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'ravioles ravioli pasta' },
+      { id: 'canelones', name: 'Canelones / Cannelloni', cat: 'Cereales', tier: 'Granos y Pastas', unit: 'pzas', baseQty: 4, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'canelones pasta' },
+      { id: 'corn_cob', name: 'Elote / Corn on the Cob', cat: 'Cereales', tier: 'Granos y Pastas', unit: 'pza', baseQty: 0.5, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'elote corn' },
+      { id: 'corn_kernels', name: 'Elote en grano / Corn Kernels', cat: 'Cereales', tier: 'Granos y Pastas', unit: 'cup', baseQty: 0.5, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'elote grano corn' },
+      { id: 'popcorn', name: 'Palomitas naturales / Air-Popped Popcorn', cat: 'Cereales', tier: 'Botanas y Avena', unit: 'cup', baseQty: 2, stepEq: 0.5, maxEq: 3, kcal: 70, p: 2, c: 15, f: 0, tags: 'palomitas popcorn' },
+      { id: 'sliced_bread', name: 'Pan de caja o negro / Sliced Bread', cat: 'Cereales', tier: 'Panes y Tortillas', unit: 'reb', baseQty: 1, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'pan caja negro bread toast sandwich' },
+      { id: 'burger_bun', name: 'Pan de hamburguesa / Burger Bun', cat: 'Cereales', tier: 'Panes y Tortillas', unit: 'pza', baseQty: 0.5, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'pan hamburguesa burger bun' },
+      { id: 'bagel', name: 'Bagel', cat: 'Cereales', tier: 'Panes y Tortillas', unit: 'pza', baseQty: 0.33, stepEq: 0.5, maxEq: 3, kcal: 70, p: 2, c: 15, f: 0, tags: 'bagel pan' },
+      { id: 'bolillo', name: 'Bolillo sin migajón', cat: 'Cereales', tier: 'Panes y Tortillas', unit: 'pza', baseQty: 0.5, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'bolillo pan' },
+      { id: 'english_muffin', name: 'English Muffin', cat: 'Cereales', tier: 'Panes y Tortillas', unit: 'pza', baseQty: 0.5, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'english muffin pan' },
+      { id: 'pita_bread', name: 'Pan árabe mediano / Pita Bread', cat: 'Cereales', tier: 'Panes y Tortillas', unit: 'pza', baseQty: 0.5, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'pan arabe pita' },
+      { id: 'ciabatta', name: 'Pan chapata / Ciabatta', cat: 'Cereales', tier: 'Panes y Tortillas', unit: 'pza', baseQty: 0.33, stepEq: 0.5, maxEq: 3, kcal: 70, p: 2, c: 15, f: 0, tags: 'chapata ciabatta pan' },
+      { id: 'corn_tortilla', name: 'Tortilla de maíz / Corn Tortilla', cat: 'Cereales', tier: 'Panes y Tortillas', unit: 'pza', baseQty: 1, stepEq: 1, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'tortilla maiz corn tacos' },
+      { id: 'nopal_tortilla', name: 'Tortilla de nopal', cat: 'Cereales', tier: 'Panes y Tortillas', unit: 'pzas', baseQty: 2, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'tortilla nopal' },
+      { id: 'wheat_tortilla', name: 'Tortilla de harina integral / Whole Wheat Tortilla', cat: 'Cereales', tier: 'Panes y Tortillas', unit: 'pza', baseQty: 1, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'tortilla harina integral wrap' },
+      { id: 'taquera_tortilla', name: 'Tortilla taquera', cat: 'Cereales', tier: 'Panes y Tortillas', unit: 'pzas', baseQty: 2, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'tortilla taquera tacos' },
+      { id: 'tostada', name: 'Tostada horneada / Baked Tostada', cat: 'Cereales', tier: 'Panes y Tortillas', unit: 'pza', baseQty: 1, stepEq: 1, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'tostada horneada' },
+      { id: 'salmas', name: 'Salmas', cat: 'Cereales', tier: 'Panes y Tortillas', unit: 'paq', baseQty: 1, stepEq: 1, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'salmas tostadas' },
+      { id: 'rice_cakes', name: 'Rice Cakes', cat: 'Cereales', tier: 'Botanas y Avena', unit: 'pzas', baseQty: 2, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'rice cakes tortitas arroz' },
+      { id: 'oats_cooked', name: 'Avena cocida / Cooked Oats', cat: 'Cereales', tier: 'Botanas y Avena', unit: 'cup', baseQty: 0.5, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'avena cocida oats oatmeal' },
+      { id: 'oats_raw', name: 'Avena cruda / Raw Oats', cat: 'Cereales', tier: 'Botanas y Avena', unit: 'cup', baseQty: 0.33, stepEq: 0.5, maxEq: 3, kcal: 70, p: 2, c: 15, f: 0, tags: 'avena cruda raw oats' },
+      { id: 'granola', name: 'Granola', cat: 'Cereales', tier: 'Botanas y Avena', unit: 'tbsp', baseQty: 2, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'granola' },
+      { id: 'marias_crackers', name: 'Galletas Marías / Saladas / Habaneras', cat: 'Cereales', tier: 'Botanas y Avena', unit: 'pzas', baseQty: 4, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'galletas marias saladas habaneras crackers' },
+      { id: 'susalia', name: 'Susalia Crackers', cat: 'Cereales', tier: 'Botanas y Avena', unit: 'paq', baseQty: 2, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'susalia crackers' },
+      { id: 'pretzels', name: 'Pretzels', cat: 'Cereales', tier: 'Botanas y Avena', unit: 'pzas', baseQty: 10, stepEq: 0.5, maxEq: 4, kcal: 70, p: 2, c: 15, f: 0, tags: 'pretzels' },
+      { id: 'alcohol_drink', name: 'Bebida alcohólica / Beer / Drink (1 = 1.5 Cereals)', cat: 'Cereales', tier: 'Alcohol', unit: 'drink', baseQty: 1, stepEq: 1.5, maxEq: 4.5, kcal: 105, p: 0, c: 22, f: 0, warningText: '1 alcoholic drink = 1.5 Cereals per your nutritionist sheet.', tags: 'cerveza beer alcohol vino wine drink bebida' },
+
+      // --- CEREALES CON GRASA (Counts as 1 Cereal + 1 Fat = 115 kcal) ---
+      { id: 'french_fries', name: 'Papas a la francesa / French Fries', cat: 'Cereales c/ Grasa', tier: '1 Cereal + 1 Grasa', unit: 'pzas', baseQty: 4, stepEq: 0.5, maxEq: 3, kcal: 115, p: 2, c: 15, f: 5, countsAsFat: 1, warningText: 'Cereales con Grasa: Automatically deducts 1 Cereal AND 1 Grasa.', tags: 'papas francesa french fries' },
+      { id: 'potato_chips', name: 'Papas fritas / Potato Chips', cat: 'Cereales c/ Grasa', tier: '1 Cereal + 1 Grasa', unit: 'pzas', baseQty: 6, stepEq: 0.5, maxEq: 3, kcal: 115, p: 2, c: 15, f: 5, countsAsFat: 1, warningText: 'Cereales con Grasa: Automatically deducts 1 Cereal AND 1 Grasa.', tags: 'papas fritas chips sabritas' },
+      { id: 'pan_dulce', name: 'Pan dulce / Sweet Bread', cat: 'Cereales c/ Grasa', tier: '1 Cereal + 1 Grasa', unit: 'pza', baseQty: 0.5, stepEq: 0.5, maxEq: 3, kcal: 115, p: 2, c: 15, f: 5, countsAsFat: 1, warningText: 'Cereales con Grasa: Automatically deducts 1 Cereal AND 1 Grasa.', tags: 'pan dulce concha pastry' },
+      { id: 'cookies', name: 'Galletas dulces / Cookies', cat: 'Cereales c/ Grasa', tier: '1 Cereal + 1 Grasa', unit: 'pzas', baseQty: 2, stepEq: 0.5, maxEq: 3, kcal: 115, p: 2, c: 15, f: 5, countsAsFat: 1, warningText: 'Cereales con Grasa: Automatically deducts 1 Cereal AND 1 Grasa.', tags: 'galletas cookies' },
+      { id: 'pancake_waffle', name: 'Hot cake / Waffle congelado', cat: 'Cereales c/ Grasa', tier: '1 Cereal + 1 Grasa', unit: 'pza', baseQty: 1, stepEq: 0.5, maxEq: 3, kcal: 115, p: 2, c: 15, f: 5, countsAsFat: 1, warningText: 'Cereales con Grasa: Automatically deducts 1 Cereal AND 1 Grasa.', tags: 'hot cake pancake waffle' },
+      { id: 'cake_pie', name: 'Pastel, panqué o pay / Cake or Pie', cat: 'Cereales c/ Grasa', tier: '1 Cereal + 1 Grasa', unit: 'reb', baseQty: 1, stepEq: 0.5, maxEq: 3, kcal: 115, p: 2, c: 15, f: 5, countsAsFat: 1, warningText: 'Cereales con Grasa: Automatically deducts 1 Cereal AND 1 Grasa.', tags: 'pastel cake panque pay pie' },
+      { id: 'tamal', name: 'Tamal', cat: 'Cereales c/ Grasa', tier: '1 Cereal + 1 Grasa', unit: 'pza', baseQty: 0.5, stepEq: 0.5, maxEq: 3, kcal: 115, p: 2, c: 15, f: 5, countsAsFat: 1, warningText: 'Cereales con Grasa: Automatically deducts 1 Cereal AND 1 Grasa.', tags: 'tamal' },
+
+      // --- GRASAS (1 Eq = 45 kcal, 5g F) ---
+      { id: 'olive_oil', name: 'Aceite de oliva / Olive Oil (or cooking oil)', cat: 'Grasas', tier: 'Aceites y Aguacate', unit: 'tsp', baseQty: 1, stepEq: 0.5, maxEq: 3, kcal: 45, p: 0, c: 0, f: 5, tags: 'aceite oliva olive oil cooking' },
+      { id: 'avocado', name: 'Aguacate / Avocado (1/3 pza o 1 reb)', cat: 'Grasas', tier: 'Aceites y Aguacate', unit: 'third', baseQty: 1, stepEq: 0.5, maxEq: 3, kcal: 45, p: 0, c: 0, f: 5, tags: 'aguacate avocado' },
+      { id: 'guacamole', name: 'Guacamole', cat: 'Grasas', tier: 'Aceites y Aguacate', unit: 'tbsp', baseQty: 2, stepEq: 0.5, maxEq: 3, kcal: 45, p: 0, c: 0, f: 5, tags: 'guacamole aguacate' },
+      { id: 'butter', name: 'Mantequilla / Butter', cat: 'Grasas', tier: 'Aceites y Aguacate', unit: 'tsp', baseQty: 1, stepEq: 0.5, maxEq: 3, kcal: 45, p: 0, c: 0, f: 5, tags: 'mantequilla butter steak' },
+      { id: 'peanut_butter', name: 'Crema de almendra o cacahuate / Nut Butter', cat: 'Grasas', tier: 'Nueces y Semillas', unit: 'tsp', baseQty: 1, stepEq: 0.5, maxEq: 3, kcal: 45, p: 0, c: 0, f: 5, tags: 'crema cacahuate almendra peanut almond butter' },
+      { id: 'almonds', name: 'Almendras / Almonds', cat: 'Grasas', tier: 'Nueces y Semillas', unit: 'pzas', baseQty: 6, stepEq: 0.5, maxEq: 3, kcal: 45, p: 0, c: 0, f: 5, tags: 'almendras almonds nuts' },
+      { id: 'peanuts', name: 'Cacahuates / Peanuts', cat: 'Grasas', tier: 'Nueces y Semillas', unit: 'pzas', baseQty: 10, stepEq: 0.5, maxEq: 3, kcal: 45, p: 0, c: 0, f: 5, tags: 'cacahuates peanuts' },
+      { id: 'walnuts', name: 'Nuez / Walnuts', cat: 'Grasas', tier: 'Nueces y Semillas', unit: 'pzas', baseQty: 4, stepEq: 0.5, maxEq: 3, kcal: 45, p: 0, c: 0, f: 5, tags: 'nuez walnuts' },
+      { id: 'cashews', name: 'Nuez de la India / Cashews', cat: 'Grasas', tier: 'Nueces y Semillas', unit: 'pzas', baseQty: 5, stepEq: 0.5, maxEq: 3, kcal: 45, p: 0, c: 0, f: 5, tags: 'nuez india cashews' },
+      { id: 'pistachios', name: 'Pistaches / Pistachios', cat: 'Grasas', tier: 'Nueces y Semillas', unit: 'pzas', baseQty: 13, stepEq: 0.5, maxEq: 3, kcal: 45, p: 0, c: 0, f: 5, tags: 'pistaches pistachios' },
+      { id: 'olives', name: 'Aceitunas / Olives', cat: 'Grasas', tier: 'Aderezos y Lácteos', unit: 'pzas', baseQty: 10, stepEq: 0.5, maxEq: 3, kcal: 45, p: 0, c: 0, f: 5, tags: 'aceitunas olives' },
+      { id: 'light_mayo', name: 'Mayonesa light / Crema / Queso crema light', cat: 'Grasas', tier: 'Aderezos y Lácteos', unit: 'tbsp', baseQty: 1, stepEq: 0.5, maxEq: 3, kcal: 45, p: 0, c: 0, f: 5, tags: 'mayonesa mayo crema cream cheese queso crema' },
+      { id: 'light_dressing', name: 'Aderezo light o Dip / Light Dressing', cat: 'Grasas', tier: 'Aderezos y Lácteos', unit: 'tbsp', baseQty: 2, stepEq: 0.5, maxEq: 3, kcal: 45, p: 0, c: 0, f: 5, tags: 'aderezo light dip dressing salad' },
+      { id: 'regular_dressing', name: 'Aderezo regular / Regular Salad Dressing', cat: 'Grasas', tier: 'Aderezos y Lácteos', unit: 'tbsp', baseQty: 0.5, stepEq: 0.5, maxEq: 3, kcal: 45, p: 0, c: 0, f: 5, tags: 'aderezo regular dressing ranch vinaigrette' },
+
+      // --- FRUTAS (1 Eq = 60 kcal, 15g C) ---
+      { id: 'apple', name: 'Manzana / Apple', cat: 'Frutas', tier: 'Pieza', unit: 'pza', baseQty: 1, stepEq: 0.5, maxEq: 2, kcal: 60, p: 0, c: 15, f: 0, tags: 'manzana apple fruta evening' },
+      { id: 'pear_orange_kiwi', name: 'Pera / Kiwi / Naranja / Mandarina reina', cat: 'Frutas', tier: 'Pieza', unit: 'pza', baseQty: 1, stepEq: 0.5, maxEq: 2, kcal: 60, p: 0, c: 15, f: 0, tags: 'pera kiwi naranja mandarina orange pear' },
+      { id: 'banana', name: 'Plátano / Banana', cat: 'Frutas', tier: 'Pieza', unit: 'pza', baseQty: 0.5, stepEq: 0.5, maxEq: 2, kcal: 60, p: 0, c: 15, f: 0, tags: 'platano banana' },
+      { id: 'berries_melon', name: 'Fresas / Berries / Melón / Papaya / Sandía / Piña', cat: 'Frutas', tier: 'Taza', unit: 'cup', baseQty: 1, stepEq: 0.5, maxEq: 2, kcal: 60, p: 0, c: 15, f: 0, tags: 'fresas berries melon papaya sandia pina strawberries' },
+      { id: 'mango_grapes', name: 'Mango / Uvas / Arándanos / Grapes', cat: 'Frutas', tier: 'Taza', unit: 'cup', baseQty: 0.5, stepEq: 0.5, maxEq: 2, kcal: 60, p: 0, c: 15, f: 0, tags: 'mango uvas grapes arandanos blueberries' },
+      { id: 'peach_plum', name: 'Durazno (2 pzas) / Ciruela o Mandarina (3 pzas)', cat: 'Frutas', tier: 'Pieza', unit: 'porción', baseQty: 1, stepEq: 0.5, maxEq: 2, kcal: 60, p: 0, c: 15, f: 0, tags: 'durazno peach ciruela mandarina' },
+      { id: 'coconut_water', name: 'Agua de coco / Coconut Water', cat: 'Frutas', tier: 'Líquido', unit: 'ml', baseQty: 330, stepEq: 0.5, maxEq: 2, kcal: 60, p: 0, c: 15, f: 0, tags: 'agua coco coconut water' },
+
+      // --- LEGUMINOSAS (1 Eq = 120 kcal, 20g C, 8g P) ---
+      { id: 'beans_lentils', name: 'Frijol / Garbanzo / Lenteja cocidos / Beans', cat: 'Leguminosas', tier: 'Opcional (0–1 Eq)', unit: 'cup', baseQty: 0.5, stepEq: 0.5, maxEq: 2, kcal: 120, p: 8, c: 20, f: 0, tags: 'frijol garbanzo lenteja beans chickpeas lentils' },
+      { id: 'edamames', name: 'Edamames / Edamame', cat: 'Leguminosas', tier: 'Opcional (0–1 Eq)', unit: 'cup', baseQty: 0.67, stepEq: 0.5, maxEq: 2, kcal: 120, p: 8, c: 20, f: 0, tags: 'edamames edamame soy' },
+      { id: 'hummus', name: 'Hummus', cat: 'Leguminosas', tier: 'Opcional (0–1 Eq)', unit: 'cup', baseQty: 0.25, stepEq: 0.5, maxEq: 2, kcal: 120, p: 8, c: 20, f: 0, tags: 'hummus garbanzo' },
+
+      // --- LECHE (1 Eq = 95 kcal, 12g C, 9g P, 2g F) ---
+      { id: 'skim_milk', name: 'Leche light / Skim Milk', cat: 'Leche', tier: 'Opcional (0–1 Eq)', unit: 'cup', baseQty: 1, stepEq: 0.5, maxEq: 2, kcal: 95, p: 9, c: 12, f: 2, tags: 'leche light milk skim' },
+      { id: 'plant_milk', name: 'Leche vegetal sin azúcar / Unsweetened Almond Milk', cat: 'Leche', tier: 'Opcional (0–1 Eq)', unit: 'cup', baseQty: 1, stepEq: 0.5, maxEq: 2, kcal: 95, p: 9, c: 12, f: 2, tags: 'leche almendra vegetal almond milk unsweetened' },
+      { id: 'plain_yogurt', name: 'Yogurt natural sin azúcar / Plain Yogurt', cat: 'Leche', tier: 'Opcional (0–1 Eq)', unit: 'cup', baseQty: 1, stepEq: 0.5, maxEq: 2, kcal: 95, p: 9, c: 12, f: 2, tags: 'yogurt natural plain greek' },
+      { id: 'jocoque', name: 'Jocoque', cat: 'Leche', tier: 'Opcional (0–1 Eq)', unit: 'cup', baseQty: 0.33, stepEq: 0.5, maxEq: 2, kcal: 95, p: 9, c: 12, f: 2, tags: 'jocoque' },
+
+      // --- AZÚCARES (1 Eq = 40 kcal, 10g C) ---
+      { id: 'sugar_honey_ketchup', name: 'Azúcar / Miel / Mermelada / Cátsup (2 c)', cat: 'Azúcares', tier: 'Evitar / Contar', unit: 'tsp', baseQty: 2, stepEq: 0.5, maxEq: 3, kcal: 40, p: 0, c: 10, f: 0, warningText: 'Azúcares are not in your base daily budget—log only if used.', tags: 'azucar sugar miel honey mermelada catsup ketchup' },
+      { id: 'ice_cream', name: 'Nieve / Ice Cream', cat: 'Azúcares', tier: 'Evitar / Contar', unit: 'bola', baseQty: 1, stepEq: 0.5, maxEq: 3, kcal: 40, p: 0, c: 10, f: 0, warningText: 'Azúcares are outside your daily plan.', tags: 'nieve ice cream helado' },
+
+      // --- LIBRES / VERDURAS (0 Eq) ---
+      { id: 'all_veggies', name: 'Todas las Verduras / All Vegetables (Libres)', cat: 'Libres', tier: 'Unlimited (0 Eq)', unit: 'porción', baseQty: 1, stepEq: 1, maxEq: 1, kcal: 0, p: 0, c: 0, f: 0, isFree: true, tags: 'verduras vegetables ensalada salad lechuga tomate san marzano brocoli espinaca pepino cebolla' },
+      { id: 'coffee_tea_water', name: 'Café negro / Té / Agua mineral / Gelatina light', cat: 'Libres', tier: 'Unlimited (0 Eq)', unit: 'porción', baseQty: 1, stepEq: 1, maxEq: 1, kcal: 0, p: 0, c: 0, f: 0, isFree: true, tags: 'cafe coffee te tea agua mineral sparkling water gelatina light' },
+      { id: 'free_condiments', name: 'Mostaza / Vinagre / Salsa soya / Limón / Salsas picantes', cat: 'Libres', tier: 'Unlimited (0 Eq)', unit: 'porción', baseQty: 1, stepEq: 1, maxEq: 1, kcal: 0, p: 0, c: 0, f: 0, isFree: true, tags: 'mostaza mustard vinagre soya soy sauce limon valentina tabasco chipotle especias' }
+    ];
+
+    const CATEGORIES = ['All', 'Proteínas', 'Cereales', 'Cereales c/ Grasa', 'Grasas', 'Frutas', 'Leguminosas', 'Leche', 'Azúcares', 'Libres'];
+
+    // =========================================================================
+    // 2. STATE & LOCALSTORAGE PERSISTENCE
+    // =========================================================================
+    const STORAGE_KEY = 'mariana_eq_tracker_v1';
+
+    let appState = {
+      gymDay: false,
+      wheyScoops: 0,
+      quickMealTarget: 'meal1',
+      activeCategory: 'All',
+      searchQuery: '',
+      selectedFoodId: null,
+      sliderEq: 1,
+      logs: [] // { id, foodId, name, cat, tier, eq, fatEqExtra, qtyLabel, kcal, p, c, f, meal }
+    };
+
+    function loadState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          appState = { ...appState, ...parsed };
+        }
+      } catch (e) {
+        console.warn('Could not load saved state:', e);
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          gymDay: appState.gymDay,
+          wheyScoops: appState.wheyScoops,
+          quickMealTarget: appState.quickMealTarget,
+          logs: appState.logs
+        }));
+      } catch (e) {
+        console.warn('Could not save state:', e);
+      }
+    }
+
+    // =========================================================================
+    // 3. FORMATTING HELPERS
+    // =========================================================================
+    function formatNum(n) {
+      return Number.isInteger(n) ? n.toString() : n.toFixed(2).replace(/\.00$/, '').replace(/(\.\d)0$/, '$1');
+    }
+
+    function formatQuantityLabel(food, eqMultiplier) {
+      if (food.isFree) return 'Libre (0 Eq)';
+      if (food.id === 'alcohol_drink') {
+        const drinks = eqMultiplier / 1.5;
+        return `${formatNum(drinks)} ${drinks === 1 ? 'drink' : 'drinks'}`;
+      }
+      const rawQty = food.baseQty * eqMultiplier;
+      if (food.unit === 'g') {
+        return `${Math.round(rawQty)}g`;
+      }
+      if (food.unit === 'ml') {
+        return `${Math.round(rawQty)} ml`;
+      }
+      if (food.unit === 'third') {
+        if (Math.abs(rawQty - 1) < 0.05) return '⅓ avocado (1 reb)';
+        if (Math.abs(rawQty - 1.5) < 0.05) return '½ avocado';
+        if (Math.abs(rawQty - 2) < 0.05) return '⅔ avocado';
+        if (Math.abs(rawQty - 3) < 0.05) return '1 whole avocado';
+        return `${formatNum(rawQty)} thirds`;
+      }
+      if (food.unit === 'cup') {
+        const fractionMap = [
+          { val: 0.25, label: '¼ cup' },
+          { val: 0.33, label: '⅓ cup' },
+          { val: 0.5, label: '½ cup' },
+          { val: 0.67, label: '⅔ cup' },
+          { val: 0.75, label: '¾ cup' },
+          { val: 1, label: '1 cup' },
+          { val: 1.25, label: '1 ¼ cups' },
+          { val: 1.33, label: '1 ⅓ cups' },
+          { val: 1.5, label: '1 ½ cups' },
+          { val: 1.67, label: '1 ⅔ cups' },
+          { val: 2, label: '2 cups' }
+        ];
+        const match = fractionMap.find(item => Math.abs(item.val - rawQty) < 0.04);
+        return match ? match.label : `${formatNum(rawQty)} cups`;
+      }
+      return `${formatNum(rawQty)} ${food.unit}`;
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastText').textContent = msg;
+      toast.classList.remove('opacity-0', 'translate-y-2');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'translate-y-2');
+      }, 2200);
+    }
+
+    // =========================================================================
+    // 4. CORE CALCULATIONS & UI RENDERING
+    // =========================================================================
+    function getTotals() {
+      const totals = {
+        Proteínas: 0,
+        Cereales: 0,
+        Grasas: 0,
+        Frutas: 0,
+        Leguminosas: 0,
+        Leche: 0,
+        kcal: 0,
+        highFatProtCount: 0
+      };
+
+      appState.logs.forEach(item => {
+        if (item.cat === 'Proteínas') {
+          totals.Proteínas += item.eq;
+          if (item.tier === 'Alto en Grasa') totals.highFatProtCount += item.eq;
+        } else if (item.cat === 'Cereales') {
+          totals.Cereales += item.eq;
+        } else if (item.cat === 'Cereales c/ Grasa') {
+          totals.Cereales += item.eq;
+          totals.Grasas += item.eq; // 1 Cereal c/ Grasa = 1 Cereal + 1 Fat
+        } else if (item.cat === 'Grasas') {
+          totals.Grasas += item.eq;
+        } else if (item.cat === 'Frutas') {
+          totals.Frutas += item.eq;
+        } else if (item.cat === 'Leguminosas') {
+          totals.Leguminosas += item.eq;
+        } else if (item.cat === 'Leche') {
+          totals.Leche += item.eq;
+        }
+        totals.kcal += item.kcal || 0;
+      });
+
+      return totals;
+    }
+
+    function renderDashboard() {
+      const t = getTotals();
+
+      // Gym day & Whey UI
+      const gymToggle = document.getElementById('gymDayToggle');
+      gymToggle.checked = appState.gymDay;
+      document.getElementById('wheyCountDisplay').textContent = formatNum(appState.wheyScoops);
+      const wheyBox = document.getElementById('wheyCounterBox');
+      wheyBox.style.opacity = appState.gymDay ? '1' : '0.55';
+
+      // Quick-tap target pills
+      ['meal1', 'meal2', 'snack'].forEach(m => {
+        const btn = document.getElementById(`qTarget-${m}`);
+        if (appState.quickMealTarget === m) {
+          btn.className = 'px-2.5 py-1 rounded-lg bg-emerald-600 text-white transition';
+        } else {
+          btn.className = 'px-2.5 py-1 rounded-lg text-zinc-400 hover:text-zinc-200 transition';
+        }
+      });
+
+      // Macro summary chip
+      document.getElementById('macroSummaryChip').textContent = `${Math.round(t.kcal)} solid kcal logged`;
+
+      // 1. Proteínas (Target 8)
+      const protRem = Math.max(0, 8 - t.Proteínas);
+      const protOver = t.Proteínas > 8;
+      document.getElementById('protUsed').textContent = formatNum(t.Proteínas);
+      document.getElementById('protRemainingText').textContent = protOver ? `+${formatNum(t.Proteínas - 8)} over` : `${formatNum(protRem)} left`;
+      document.getElementById('protRemainingText').className = `text-[11px] font-semibold ${protOver ? 'text-rose-400' : 'text-zinc-400'}`;
+      document.getElementById('protBar').style.width = `${Math.min(100, (t.Proteínas / 8) * 100)}%`;
+      document.getElementById('protBar').className = `h-full rounded-full transition-all duration-300 ${protOver ? 'bg-rose-500' : 'bg-emerald-500'}`;
+      document.getElementById('protGramsHint').textContent = protOver ? 'Daily solid protein reached' : `${Math.round(protRem * 30)}g cooked meat left`;
+
+      // 2. Cereales (Target 3-4)
+      const cerRemMin = Math.max(0, 3 - t.Cereales);
+      const cerRemMax = Math.max(0, 4 - t.Cereales);
+      const cerOver = t.Cereales > 4;
+      document.getElementById('cerUsed').textContent = formatNum(t.Cereales);
+      document.getElementById('cerRemainingText').textContent = cerOver
+        ? `+${formatNum(t.Cereales - 4)} over`
+        : (t.Cereales >= 3 ? `0–${formatNum(cerRemMax)} left` : `${formatNum(cerRemMin)}–${formatNum(cerRemMax)} left`);
+      document.getElementById('cerRemainingText').className = `text-[11px] font-semibold ${cerOver ? 'text-rose-400' : 'text-zinc-400'}`;
+      document.getElementById('cerBar').style.width = `${Math.min(100, (t.Cereales / 4) * 100)}%`;
+      document.getElementById('cerBar').className = `h-full rounded-full transition-all duration-300 ${cerOver ? 'bg-rose-500' : 'bg-amber-400'}`;
+      const cupsRemMax = cerRemMax * 0.5;
+      document.getElementById('cerCupsHint').textContent = cerOver ? 'Max 4 cereals exceeded' : `Up to ${formatNum(cupsRemMax)} cups rice/pasta`;
+
+      // 3. Grasas (Target 3)
+      const fatRem = Math.max(0, 3 - t.Grasas);
+      const fatOver = t.Grasas > 3;
+      document.getElementById('fatUsed').textContent = formatNum(t.Grasas);
+      document.getElementById('fatRemainingText').textContent = fatOver ? `+${formatNum(t.Grasas - 3)} over` : `${formatNum(fatRem)} left`;
+      document.getElementById('fatRemainingText').className = `text-[11px] font-semibold ${fatOver ? 'text-rose-400' : 'text-zinc-400'}`;
+      document.getElementById('fatBar').style.width = `${Math.min(100, (t.Grasas / 3) * 100)}%`;
+      document.getElementById('fatBar').className = `h-full rounded-full transition-all duration-300 ${fatOver ? 'bg-rose-500' : 'bg-sky-400'}`;
+      const fatHintEl = document.getElementById('fatExtraWarning');
+      if (t.highFatProtCount > 0) {
+        fatHintEl.textContent = `⚠️ ${formatNum(t.highFatProtCount)} Alto-Grasa prot logged`;
+        fatHintEl.className = 'text-[11px] text-amber-400 mt-1.5 truncate font-medium';
+      } else {
+        fatHintEl.textContent = fatOver ? 'Daily fat target reached' : `${Math.round(fatRem * 5)}g healthy fats left`;
+        fatHintEl.className = 'text-[11px] text-zinc-400 mt-1.5 truncate';
+      }
+
+      // 4. Frutas (Target 1)
+      const fruitRem = Math.max(0, 1 - t.Frutas);
+      const fruitOver = t.Frutas > 1;
+      document.getElementById('fruitUsed').textContent = formatNum(t.Frutas);
+      document.getElementById('fruitRemainingText').textContent = fruitOver ? `+${formatNum(t.Frutas - 1)} over` : `${formatNum(fruitRem)} left`;
+      document.getElementById('fruitBar').style.width = `${Math.min(100, (t.Frutas / 1) * 100)}%`;
+      document.getElementById('fruitBar').className = `h-full rounded-full transition-all duration-300 ${fruitOver ? 'bg-rose-500' : 'bg-rose-400'}`;
+
+      // 5. Leguminosas & Leche
+      document.getElementById('legUsed').textContent = formatNum(t.Leguminosas);
+      document.getElementById('milkUsed').textContent = formatNum(t.Leche);
+    }
+
+    // =========================================================================
+    // 5. CATEGORY BROWSER, BILINGUAL SEARCH & SLIDER LOGIC
+    // =========================================================================
+    function renderCategoryPills() {
+      const container = document.getElementById('categoryPills');
+      container.innerHTML = CATEGORIES.map(cat => {
+        const active = appState.activeCategory === cat;
+        return `
+          <button
+            onclick="setCategoryFilter('${cat}')"
+            class="px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition ${
+              active
+                ? 'bg-emerald-600 text-white shadow-sm'
+                : 'bg-zinc-950 text-zinc-400 hover:text-zinc-200 border border-zinc-800'
+            }"
+          >
+            ${cat}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function filterByCategory(cat) {
+      appState.activeCategory = cat;
+      appState.searchQuery = '';
+      document.getElementById('foodSearchInput').value = '';
+      document.getElementById('clearSearchBtn').classList.add('hidden');
+      renderCategoryPills();
+      renderFoodList();
+      document.getElementById('lookupSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function setCategoryFilter(cat) {
+      appState.activeCategory = cat;
+      renderCategoryPills();
+      renderFoodList();
+    }
+
+    function handleSearchInput() {
+      const val = document.getElementById('foodSearchInput').value.trim();
+      appState.searchQuery = val;
+      const clearBtn = document.getElementById('clearSearchBtn');
+      if (val.length > 0) {
+        clearBtn.classList.remove('hidden');
+        // Switch to All when typing a query so user sees cross-category matches immediately
+        if (appState.activeCategory !== 'All') {
+          appState.activeCategory = 'All';
+          renderCategoryPills();
+        }
+      } else {
+        clearBtn.classList.add('hidden');
+      }
+      renderFoodList();
+    }
+
+    function clearSearch() {
+      document.getElementById('foodSearchInput').value = '';
+      appState.searchQuery = '';
+      document.getElementById('clearSearchBtn').classList.add('hidden');
+      renderFoodList();
+    }
+
+    function getCategoryBadgeStyle(food) {
+      if (food.cat === 'Proteínas') {
+        if (food.tier === 'Muy Bajo en Grasa') return 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30';
+        if (food.tier === 'Bajo en Grasa') return 'bg-teal-500/15 text-teal-300 border-teal-500/30';
+        if (food.tier === 'Moderado en Grasa') return 'bg-amber-500/15 text-amber-300 border-amber-500/30';
+        if (food.tier === 'Alto en Grasa') return 'bg-rose-500/15 text-rose-300 border-rose-500/30';
+      }
+      if (food.cat === 'Cereales') return 'bg-amber-500/15 text-amber-300 border-amber-500/30';
+      if (food.cat === 'Cereales c/ Grasa') return 'bg-orange-500/15 text-orange-300 border-orange-500/30';
+      if (food.cat === 'Grasas') return 'bg-sky-500/15 text-sky-300 border-sky-500/30';
+      if (food.cat === 'Frutas') return 'bg-rose-500/15 text-rose-300 border-rose-500/30';
+      if (food.cat === 'Leguminosas') return 'bg-orange-500/15 text-orange-200 border-orange-500/30';
+      if (food.cat === 'Leche') return 'bg-purple-500/15 text-purple-300 border-purple-500/30';
+      if (food.cat === 'Libres') return 'bg-teal-500/15 text-teal-300 border-teal-500/30';
+      return 'bg-zinc-800 text-zinc-300 border-zinc-700';
+    }
+
+    function renderFoodList() {
+      const container = document.getElementById('foodResultsContainer');
+      const q = appState.searchQuery.toLowerCase();
+
+      const filtered = FOOD_DB.filter(item => {
+        const matchesCat = appState.activeCategory === 'All' || item.cat === appState.activeCategory;
+        if (!matchesCat) return false;
+        if (!q) return true;
+        const haystack = `${item.name} ${item.cat} ${item.tier} ${item.tags}`.toLowerCase();
+        return q.split(/\s+/).every(word => haystack.includes(word));
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-6 text-zinc-500 text-xs">
+            No matching foods found for "${appState.searchQuery}". Try searching in English or Spanish (e.g., "gouda", "chicken", "arroz", "aguacate").
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(food => {
+        const badgeStyle = getCategoryBadgeStyle(food);
+        const baseEqCost = food.id === 'alcohol_drink' ? 1.5 : 1;
+        const baseUnitDisplay = formatQuantityLabel(food, baseEqCost);
+        const selectedRing = appState.selectedFoodId === food.id ? 'border-emerald-500 bg-zinc-900' : 'border-zinc-800/80 bg-zinc-950/80 hover:bg-zinc-900';
+
+        return `
+          <button
+            onclick="selectFoodForSlider('${food.id}')"
+            class="w-full text-left p-3 rounded-xl border ${selectedRing} transition flex items-center justify-between gap-3 group"
+          >
+            <div class="min-w-0">
+              <div class="flex flex-wrap items-center gap-1.5 mb-1">
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-md border ${badgeStyle}">
+                  ${food.cat}${food.cat === 'Proteínas' ? ` • ${food.tier}` : ''}
+                </span>
+                ${food.highFat ? '<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">⚠️ High Fat</span>' : ''}
+              </div>
+              <div class="text-xs sm:text-sm font-semibold text-zinc-100 truncate group-hover:text-white">${food.name}</div>
+            </div>
+            <div class="text-right shrink-0">
+              <div class="text-xs font-extrabold text-zinc-200">${baseUnitDisplay}</div>
+              <div class="text-[10px] text-zinc-500 font-medium">${food.isFree ? 'Unlimited' : `= ${baseEqCost} Eq`}</div>
+            </div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectFoodForSlider(foodId) {
+      const food = FOOD_DB.find(f => f.id === foodId);
+      if (!food) return;
+
+      appState.selectedFoodId = foodId;
+      const defaultEq = food.id === 'alcohol_drink' ? 1.5 : (food.cat === 'Proteínas' ? 4 : 1);
+      appState.sliderEq = food.isFree ? 1 : defaultEq;
+
+      const panel = document.getElementById('portionSliderPanel');
+      panel.classList.remove('hidden');
+
+      document.getElementById('sliderFoodName').textContent = food.name;
+      document.getElementById('sliderCatBadge').textContent = food.cat;
+      document.getElementById('sliderCatBadge').className = `text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border ${getCategoryBadgeStyle(food)}`;
+      document.getElementById('sliderTierBadge').textContent = food.tier;
+
+      const baseEqCost = food.id === 'alcohol_drink' ? 1.5 : 1;
+      document.getElementById('sliderBaseRule').textContent = food.isFree
+        ? 'Libre / Unlimited (0 Equivalents)'
+        : `${baseEqCost} Equivalent = ${formatQuantityLabel(food, baseEqCost)} (${food.kcal} kcal)`;
+
+      // Warning box
+      const warningBox = document.getElementById('sliderWarningBox');
+      if (food.warningText) {
+        warningBox.classList.remove('hidden');
+        document.getElementById('sliderWarningText').textContent = food.warningText;
+      } else {
+        warningBox.classList.add('hidden');
+      }
+
+      // Configure range slider
+      const slider = document.getElementById('portionRangeSlider');
+      if (food.isFree) {
+        slider.disabled = true;
+        slider.min = 1;
+        slider.max = 1;
+        slider.step = 1;
+        slider.value = 1;
+      } else {
+        slider.disabled = false;
+        slider.min = food.stepEq;
+        slider.max = food.maxEq;
+        slider.step = food.stepEq;
+        slider.value = appState.sliderEq;
+      }
+
+      updateSliderReadout();
+      renderFoodList();
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function closeSliderPanel() {
+      appState.selectedFoodId = null;
+      document.getElementById('portionSliderPanel').classList.add('hidden');
+      renderFoodList();
+    }
+
+    function updateSliderReadout() {
+      const food = FOOD_DB.find(f => f.id === appState.selectedFoodId);
+      if (!food) return;
+
+      const slider = document.getElementById('portionRangeSlider');
+      const eq = parseFloat(slider.value);
+      appState.sliderEq = eq;
+
+      const qtyLabel = formatQuantityLabel(food, eq);
+      document.getElementById('sliderAmountDisplay').textContent = qtyLabel;
+      document.getElementById('sliderEqDisplay').textContent = food.isFree
+        ? '(0 Eq)'
+        : `(${formatNum(eq)} ${food.cat === 'Cereales c/ Grasa' ? 'Cer + ' + formatNum(eq) + ' Fat' : 'Eq'})`;
+
+      const mult = food.id === 'alcohol_drink' ? (eq / 1.5) : eq;
+      document.getElementById('sliderKcal').textContent = `${Math.round(food.kcal * mult)} kcal`;
+      document.getElementById('sliderProt').textContent = `${formatNum(food.p * mult)}g`;
+      document.getElementById('sliderCarb').textContent = `${formatNum(food.c * mult)}g`;
+      document.getElementById('sliderFat').textContent = `${formatNum(food.f * mult)}g`;
+    }
+
+    // =========================================================================
+    // 6. LOGGING & ACTIONS
+    // =========================================================================
+    function addSelectedFoodToMeal(mealKey) {
+      const food = FOOD_DB.find(f => f.id === appState.selectedFoodId);
+      if (!food) return;
+
+      const eq = food.isFree ? 0 : appState.sliderEq;
+      const mult = food.id === 'alcohol_drink' ? (eq / 1.5) : eq;
+
+      const entry = {
+        id: Date.now() + Math.random().toString(36).slice(2, 6),
+        foodId: food.id,
+        name: food.name.split('/')[0].trim(),
+        cat: food.cat,
+        tier: food.tier,
+        eq: eq,
+        qtyLabel: formatQuantityLabel(food, eq || 1),
+        kcal: Math.round(food.kcal * mult),
+        p: food.p * mult,
+        c: food.c * mult,
+        f: food.f * mult,
+        meal: mealKey
+      };
+
+      appState.logs.push(entry);
+      saveState();
+      renderDashboard();
+      renderMealLogs();
+
+      const mealNames = { meal1: '12:00 PM Meal', meal2: '6:00 PM Meal', snack: 'Evening Snack' };
+      showToast(`Added ${entry.qtyLabel} ${entry.name} to ${mealNames[mealKey]}`);
+    }
+
+    function quickAddStaple(foodId, eqAmount) {
+      const food = FOOD_DB.find(f => f.id === foodId);
+      if (!food) return;
+
+      const mealKey = appState.quickMealTarget;
+      const entry = {
+        id: Date.now() + Math.random().toString(36).slice(2, 6),
+        foodId: food.id,
+        name: food.name.split('/')[0].trim(),
+        cat: food.cat,
+        tier: food.tier,
+        eq: eqAmount,
+        qtyLabel: formatQuantityLabel(food, eqAmount),
+        kcal: Math.round(food.kcal * eqAmount),
+        p: food.p * eqAmount,
+        c: food.c * eqAmount,
+        f: food.f * eqAmount,
+        meal: mealKey
+      };
+
+      appState.logs.push(entry);
+      saveState();
+      renderDashboard();
+      renderMealLogs();
+
+      const mealNames = { meal1: '12:00 PM', meal2: '6:00 PM', snack: 'Snack' };
+      showToast(`+${entry.qtyLabel} ${entry.name} (${mealNames[mealKey]})`);
+    }
+
+    function deleteLogItem(id) {
+      appState.logs = appState.logs.filter(item => item.id !== id);
+      saveState();
+      renderDashboard();
+      renderMealLogs();
+      showToast('Item removed');
+    }
+
+    function setQuickMealTarget(mealKey) {
+      appState.quickMealTarget = mealKey;
+      saveState();
+      renderDashboard();
+    }
+
+    function toggleGymDay() {
+      appState.gymDay = document.getElementById('gymDayToggle').checked;
+      if (appState.gymDay && appState.wheyScoops === 0) {
+        appState.wheyScoops = 1;
+      }
+      saveState();
+      renderDashboard();
+    }
+
+    function adjustWhey(delta) {
+      appState.wheyScoops = Math.max(0, appState.wheyScoops + delta);
+      if (appState.wheyScoops > 0 && !appState.gymDay) {
+        appState.gymDay = true;
+      }
+      saveState();
+      renderDashboard();
+    }
+
+    function renderMealLogs() {
+      const groups = { meal1: [], meal2: [], snack: [] };
+      appState.logs.forEach(item => {
+        if (groups[item.meal]) groups[item.meal].push(item);
+      });
+
+      document.getElementById('totalItemsCount').textContent = `${appState.logs.length} ${appState.logs.length === 1 ? 'item' : 'items'}`;
+
+      const emptyLabels = {
+        meal1: 'Nothing logged for 12:00 PM yet.',
+        meal2: 'Nothing logged for 6:00 PM yet.',
+        snack: 'No evening snack logged.'
+      };
+
+      ['meal1', 'meal2', 'snack'].forEach(mealKey => {
+        const listEl = document.getElementById(`${mealKey}List`);
+        const sumEl = document.getElementById(`${mealKey}Summary`);
+        const items = groups[mealKey];
+
+        sumEl.textContent = `${items.length} ${items.length === 1 ? 'item' : 'items'}`;
+
+        if (items.length === 0) {
+          listEl.innerHTML = `<p class="text-xs text-zinc-600 italic py-1">${emptyLabels[mealKey]}</p>`;
+          return;
+        }
+
+        listEl.innerHTML = items.map(item => `
+          <div class="flex items-center justify-between gap-2 bg-zinc-950/90 border border-zinc-800/80 rounded-xl px-3 py-2">
+            <div class="min-w-0">
+              <div class="text-xs font-bold text-zinc-100 truncate">
+                <span class="text-emerald-400">${item.qtyLabel}</span> • ${item.name}
+              </div>
+              <div class="text-[11px] text-zinc-400">
+                ${item.cat}${item.eq > 0 ? ` (${formatNum(item.eq)} Eq)` : ' (Libre)'} • ${item.kcal} kcal
+              </div>
+            </div>
+            <button onclick="deleteLogItem('${item.id}')" class="p-1.5 rounded-lg text-zinc-500 hover:text-rose-400 hover:bg-zinc-900 transition shrink-0" title="Remove item">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+            </button>
+          </div>
+        `).join('');
+      });
+    }
+
+    // =========================================================================
+    // 7. SMART 6:00 PM DINNER COMBO GENERATOR
+    // =========================================================================
+    function generateDinnerCombos() {
+      const t = getTotals();
+      const remProt = Math.max(0, 8 - t.Proteínas);
+      const remCerBase = Math.max(0, 3 - t.Cereales);
+      const remCerMax = Math.max(0, 4 - t.Cereales);
+      const remFat = Math.max(0, 3 - t.Grasas);
+
+      const output = document.getElementById('dinnerCombosOutput');
+      output.classList.remove('hidden');
+
+      if (remProt === 0 && remCerMax === 0 && remFat === 0) {
+        output.innerHTML = `
+          <div class="bg-zinc-950/90 border border-emerald-500/30 rounded-xl p-3 text-xs text-emerald-300">
+            You have already filled your solid-food equivalents for the day! Stick to unlimited veggies (verduras libres) or your evening apple if you still have your 1 Fruit left.
+          </div>
+        `;
+        return;
+      }
+
+      const meatGrams = Math.round(remProt * 30);
+      const targetCer = remCerBase > 0 ? remCerBase : remCerMax;
+      const riceCupsText = targetCer > 0 ? formatQuantityLabel({ unit: 'cup', baseQty: 0.5 }, targetCer) : '0 cups (Veggies only)';
+      const fatTeaspoons = formatNum(remFat);
+
+      const combos = [
+        {
+          title: 'Combo 1: Chicken & Rice Bowl',
+          badge: 'Muy Bajo en Grasa',
+          details: `
+            • <strong>Protein:</strong> ${meatGrams > 0 ? `${meatGrams}g cooked chicken breast (${formatNum(remProt)} Eq)` : '0g left (use veggies)'}<br>
+            • <strong>Carb:</strong> ${targetCer > 0 ? `${riceCupsText} cooked parboiled rice (${formatNum(targetCer)}${remCerMax > targetCer ? '–' + formatNum(remCerMax) : ''} Eq)` : 'None left — load up on greens'}<br>
+            • <strong>Fat:</strong> ${remFat > 0 ? `${formatNum(remFat)}/3 avocado (${formatNum(remFat)} Eq) or ${fatTeaspoons} tsp olive oil` : '0 fats left (grill dry / use salsa)'}<br>
+            • <strong>Veggies:</strong> Unlimited salad + San Marzano tomato sauce
+          `
+        },
+        {
+          title: 'Combo 2: Lean New York Strip & Pasta / Potatoes',
+          badge: 'Bajo en Grasa',
+          details: `
+            • <strong>Protein:</strong> ${meatGrams > 0 ? `${meatGrams}g cooked trimmed NY Strip steak (${formatNum(remProt)} Eq)` : '0g left'}<br>
+            • <strong>Carb:</strong> ${targetCer > 0 ? `${riceCupsText} cooked pasta or roasted potatoes (${formatNum(targetCer)} Eq)` : 'None left'}<br>
+            • <strong>Fat:</strong> ${remFat > 0 ? `1 tsp butter on steak + ${Math.max(0, remFat - 1)} tsp olive oil on veggies (${formatNum(remFat)} Eq)` : '0 fats left'}
+          `
+        },
+        {
+          title: 'Combo 3: Quick Panela & Deli Sandwich / Wrap',
+          badge: 'Zero Cooking',
+          details: `
+            • <strong>Protein:</strong> ${remProt > 0 ? `${Math.round((remProt / 2) * 30)}g panela cheese + ${formatNum(remProt)} thin slices turkey/deli ham (${formatNum(remProt)} Eq total)` : '0g left'}<br>
+            • <strong>Carb:</strong> ${targetCer > 0 ? `${formatNum(targetCer)} slices pan de caja or corn tortillas (${formatNum(targetCer)} Eq)` : 'Lettuce wrap (0 Cereals)'}<br>
+            • <strong>Fat:</strong> ${remFat > 0 ? `${formatNum(remFat)} tbsp light mayo or ⅓ avocado + almonds (${formatNum(remFat)} Eq)` : 'Mustard & hot sauce (Libres)'}
+          `
+        }
+      ];
+
+      output.innerHTML = combos.map(c => `
+        <div class="bg-zinc-950/90 border border-zinc-800 rounded-xl p-3 space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-white">${c.title}</span>
+            <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300">${c.badge}</span>
+          </div>
+          <p class="text-xs text-zinc-300 leading-relaxed">${c.details}</p>
+        </div>
+      `).join('');
+    }
+
+    // =========================================================================
+    // 8. MODAL & INITIALIZATION
+    // =========================================================================
+    function openResetModal() {
+      const modal = document.getElementById('resetModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeResetModal() {
+      const modal = document.getElementById('resetModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function confirmResetDay() {
+      appState.logs = [];
+      appState.wheyScoops = 0;
+      saveState();
+      renderDashboard();
+      renderMealLogs();
+      document.getElementById('dinnerCombosOutput').classList.add('hidden');
+      closeResetModal();
+      showToast('Day reset to zero');
+    }
+
+    // Boot
+    window.addEventListener('DOMContentLoaded', () => {
+      const now = new Date();
+      document.getElementById('currentDateLabel').textContent = now.toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'short',
+        day: 'numeric'
+      });
+// ... existing code ... -->
