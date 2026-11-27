@@ -122,6 +122,10 @@
       background-color: #09090b;
       color: #f4f4f5;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    button, input, label {
+      touch-action: manipulation;
     }
     /* Custom sleek range slider */
     input[type="range"] {
@@ -1313,11 +1317,28 @@
     }
 
     // Boot
-    window.addEventListener('DOMContentLoaded', () => {
+    function initApp() {
       const now = new Date();
-      document.getElementById('currentDateLabel').textContent = now.toLocaleDateString('en-US', {
-        weekday: 'long',
-        month: 'short',
-        day: 'numeric'
-      });
-// ... existing code ... -->
+      const dateEl = document.getElementById('currentDateLabel');
+      if (dateEl) {
+        dateEl.textContent = now.toLocaleDateString('en-US', {
+          weekday: 'long',
+          month: 'short',
+          day: 'numeric'
+        });
+      }
+      loadState();
+      renderDashboard();
+      renderCategoryPills();
+      renderFoodList();
+      renderMealLogs();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
+  </script>
+</body>
+</html>
